@@ -1,4 +1,3 @@
-
 // Daniel Shiffman
 // http://codingtra.in
 // http://patreon.com/codingtrain
@@ -16,15 +15,9 @@ var particles = [];
 
 var flowfield;
 
-var img;
-
-var par;
 function setup() {
   cnv = createCanvas(windowWidth, windowHeight);
-//  par = createDiv('');
-//  par.id("canvasHolder");
-//  par.child(cnv);
-//  par.style('z-index','-25');
+  cnv.parent('canvasParent');
   cnv.style('z-index','-25');
   colorMode(HSB, 255);
   cols = floor(width / scl);

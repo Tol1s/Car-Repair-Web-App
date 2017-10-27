@@ -10,52 +10,58 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!---- Trying to make some cool stuff with p5.js ----->
-    <script async src=https://CDN.JSDelivr.net/g/p5.js(p5.min.js+addons/p5.dom.js+addons/p5.sound.js)></script>
-    <script defer src=/../sketch.js></script>
-    <script defer src=/../particle.js></script>
     <!---- Our Custom CSS ----->
-    <link rel="stylesheet" href="../p5styles.css">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
 
-   <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-           <!-- Logo -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="/admin" class="navbar-brand">Auto Repair</a>
-            </div>
-           <!-- Menu Items -->
-            <div class="collapse navbar-collapse" id="mainNavBar">
-                <ul class="nav navbar-nav navbar-left">
-                    <li>
-                        <a href="/admin/users">Users</a>
-                    </li>
-                    <li>
-                        <a href="/admin/repairs">Repairs</a>
-                    </li>
-                    <li>
-                        <a href="/admin/vehicles">Vehicles</a>
-                    </li>
-                    <li>
-                        <a href="/admin/parts">Parts</a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/logout">Logout</a></li>
-                </ul>
-           </div>
-        </div>
-    </nav>
+    <#include "navbar.ftl">
+
     <div class="p5container">
         <img src="/../Images/eXtremeRed.png">
     </div>
 
-
+        <h1 class="errorRed">${errorMessage!""}</h1>
+        <#if user??>
+            <h1>Welcome to eXtreme Performance dear ${user.firstName!"admin"}!</h1>
+                <#if repairsList??>
+                    <h3><u>Repairs By Repair Date</u></h3>
+                    <div class="table-responsive">
+                        <table id="resultsTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Repair ID</th>
+                                    <th>Scheduled DateTime</th>
+                                    <th>Status</th>
+                                    <th>Type</th>
+                                    <th>Tasks</th>
+                                    <th>Total Cost</th>
+                                    <th>Vehicle ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <#list repairsList as repair>
+                            <span>
+                                <tr>
+                                    <td>${repair.repairID!}</td>
+                                    <td>
+                                        <input type="datetime-local" name="repairDateTime" id="repairDateTime" value="${repair.repairDateTime!""}" disabled/>
+                                    </td>
+                                    <td>${repair.repairStatus!"Could not retrieve value!"}</td>
+                                    <td>${repair.repairType.repairTypeDescription!"Could not retrieve value!"}</td>
+                                    <td>${repair.repairTasks!"Could not retrieve value!"}</td>
+                                    <td>${repair.repairTotalCost!"Could not retrieve value!"}</td>
+                                    <td>${repair.vehicleID!"Could not retrieve value!"}</td>
+                                </tr>
+                            </span>
+                            </#list>
+                            </tbody>
+                        </table>
+                    </div>
+                <#else>
+                    <h3><u>No Repairs found!</u></h3>
+                </#if>
+            </#if>
+    <#include "footer.ftl">
 </body>
 </html>

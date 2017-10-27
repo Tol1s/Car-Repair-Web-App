@@ -77,9 +77,10 @@ public class PartController {
         return "redirect:/admin/parts";
 
     }
+
     //The processDeletePart() method will map "/admin/parts/delete/{id}" GET requests and
     //will delete a part and redirect to "/admin/parts"
-    @RequestMapping(value = "/parts/delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/parts/delete/{id}", method = RequestMethod.POST)
     public String processDeletePart(@PathVariable Long id,
                                     RedirectAttributes redirectAttributes) {
         //Delete the part
@@ -109,7 +110,7 @@ public class PartController {
         List<Part> partsList;
         //Getting the searchForm values and checking
         //If both are null
-        if (partSearchForm.getPartID() == null && (partSearchForm.getPartPriceStart() == null || partSearchForm.getPartPriceEnd() == null) ) {
+        if (partSearchForm.getPartID() == null && (partSearchForm.getPartPriceStart() == null || partSearchForm.getPartPriceEnd() == null)) {
             //Then we retrieve all the parts
             partsList = partService.findAll();
             //If the AFM is not null
@@ -152,7 +153,7 @@ public class PartController {
         //Get the model
         Map<String, Object> map = model.asMap();
         //If there is not already a PartForm something went wrong so we redirect
-        if (!map.containsKey(PART_FORM)){
+        if (!map.containsKey(PART_FORM)) {
             return "redirect:/admin/parts";
         }
         //If there is not PartForm

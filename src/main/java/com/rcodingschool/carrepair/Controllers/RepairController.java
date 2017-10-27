@@ -80,6 +80,7 @@ public class RepairController {
             Repair repair = RepairConverter.buildInsertRepairObject(repairForm);
             //Save the repair
             repairService.save(repair);
+
             //Send information to the user
             redirectAttributes.addFlashAttribute(MESSAGE, "Repair was created!");
         } catch (Exception exception) {
@@ -91,7 +92,7 @@ public class RepairController {
 
     //The processDeleteRerair() method will map "/admin/repairs/delete/{id}" GET requests and
     //will delete a repair and redirect to "/admin/repairs"
-    @RequestMapping(value = "/repairs/delete/{repairID}", method = RequestMethod.GET)
+    @RequestMapping(value = "/repairs/delete/{repairID}", method = RequestMethod.POST)
     public String processDeleteRepair(@PathVariable Long repairID,
                                       RedirectAttributes redirectAttributes) {
         //Delete the repair
@@ -122,25 +123,21 @@ public class RepairController {
         List<Repair> repairList = new ArrayList<>();
         //Getting the searchForm values and checking
         //If both are null
-        if (repairSearchForm.getRepairID() != null){
+        if (repairSearchForm.getRepairID() != null) {
             repairList = repairService.findByRepairID(repairSearchForm.getRepairID());
-        }
-        else{
-            if (repairSearchForm.getRepairVehicleID() != null){
-                if  (repairSearchForm.getRepairDateTimeStart() == null && repairSearchForm.getRepairDateTimeEnd() == null){
+        } else {
+            if (repairSearchForm.getRepairVehicleID() != null) {
+                if (repairSearchForm.getRepairDateTimeStart() == null && repairSearchForm.getRepairDateTimeEnd() == null) {
                     repairList = repairService.findByVehicleID(repairSearchForm.getRepairVehicleID());
-                }
-                else{
-                    if (repairSearchForm.getRepairDateTimeStart() != null && repairSearchForm.getRepairDateTimeEnd() != null){
-                        //repairList = repairService.findAllByRepairDateTimeBetweenAndVehicleID()
+                } else {
+                    if (repairSearchForm.getRepairDateTimeStart() != null && repairSearchForm.getRepairDateTimeEnd() != null) {
+                        repairList = repairService.findAllByRepairDateTimeBetweenAndVehicleID(repairSearchForm.getRepairDateTimeStart(),repairSearchForm.getRepairDateTimeEnd(),repairSearchForm.getRepairVehicleID());
                     }
                 }
-            }
-            else{
-                if (repairSearchForm.getRepairDateTimeStart() != null && repairSearchForm.getRepairDateTimeEnd() != null){
+            } else {
+                if (repairSearchForm.getRepairDateTimeStart() != null && repairSearchForm.getRepairDateTimeEnd() != null) {
                     repairList = repairService.findAllByRepairDateTimeBetween(repairSearchForm.getRepairDateTimeStart(), repairSearchForm.getRepairDateTimeEnd());
-                }
-                else{
+                } else {
                     repairList = repairService.findAll();
                 }
             }
@@ -202,7 +199,7 @@ public class RepairController {
             Repair repair = RepairConverter.buildUpdateRepairObject(repairForm);
             //Save the repair
             repairService.save(repair);
-            redirectAttributes.addFlashAttribute(MESSAGE,"Repair was updated!");
+            redirectAttributes.addFlashAttribute(MESSAGE, "Repair was updated!");
             return "redirect:/admin/repairs";
         } catch (Exception exception) {
             //if an error occurs show it to the user

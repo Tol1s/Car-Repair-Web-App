@@ -36,8 +36,8 @@
         </div>
 
     <h1 class="errorRed">${errorMessage!""}</h1>
-    <h2>Create Repair</h2>
-
+    <h2>Add Repair</h2>
+    <br><br>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -60,7 +60,6 @@
                                 <select class="form-control" id="repairTypeID" name="repairTypeID">
                                     <option value="1">Small Service</option>
                                     <option value="2">Great Service</option>
-                                    <option value="3">Custom Service</option>
                                 </select>
                                 <#list spring.status.errorMessages as error>
                                     <span class="errorRed">${error}</span>
@@ -88,14 +87,7 @@
                                 <span class="errorRed">${error}</span>
                             </#list>
                         </div>
-                        <div class="form-group">
-                            <label for="repairTotalCost">Total Cost</label>
-                            <@spring.bind "repairForm.repairTotalCost"/>
-                                <input class="form-control" type="number" name="repairTotalCost" id="repairTotalCost" placeholder="344" value="${repairForm.repairTotalCost!""}"/>
-                            <#list spring.status.errorMessages as error>
-                                <span class="errorRed">${error}</span>
-                            </#list>
-                        </div>
+
                         <div class="form-group">
                             <@spring.bind "repairForm.repairTasks"/>
                             <label for="repairTasks">Tasks</label>
@@ -192,6 +184,7 @@
                         <th>Scheduled DateTime</th>
                         <th>Status</th>
                         <th>Type</th>
+                        <th>Total Cost</th>
                         <th>Tasks</th>
                         <th>Vehicle ID</th>
                         <th>Edit Repair</th>
@@ -209,6 +202,7 @@
                         </td>
                         <td>${repair.repairStatus!"Could not retrieve value!"}</td>
                         <td>${repair.repairType.repairTypeDescription!"Could not retrieve value!"}</td>
+                        <td>${repair.repairTotalCost!"Could not retrieve value!"}</td>
                         <td>${repair.repairTasks!"Could not retrieve value!"}</td>
                         <td>${repair.vehicleID!"Could not retrieve value!"}</td>
 
@@ -219,13 +213,13 @@
                             </button>
                         </td>
                         <td>
-                            <button type="submit" class="btn btn-danger" formaction="/admin/repairs/delete/${repair.repairID}" formmethod="GET" onclick="return confirm('Are you sure?')">
+                            <button type="submit" class="btn btn-danger" formaction="/admin/repairs/delete/${repair.repairID}" formmethod="POST" onclick="return confirm('Are you sure?')">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
                         </td>
                         <td>
                             <button type="submit" class="btn btn-success" formaction="/admin/repairs/parts/${repair.repairID}" formmethod="GET" >
-                                <span class="glyphicon glyphicon-cog"></span>
+                                <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </td>
                         </form>

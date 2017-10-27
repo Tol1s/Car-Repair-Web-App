@@ -13,19 +13,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/../utilities.js"></script>
     <link rel="stylesheet" href="/../styles.css">
-    <!---- Trying to make some cool stuff with p5.js
-    <script async src=https://CDN.JSDelivr.net/g/p5.js(p5.min.js+addons/p5.dom.js+addons/p5.sound.js)></script>
-    <script defer src=/../sketch.js></script>
-    <script defer src=/../particle.js></script> ------>
-
     <style>
         fieldset.Hor {
             float: left;
-            width: 33.3%;
+            width: 50%;
             padding: 20;
         }
         fieldset.Norm {
             padding: 20;
+            width: 100%;
         }
     </style>
 
@@ -33,7 +29,7 @@
 
 <body>
     <#include "navbar.ftl">
-    <div class="p5container">
+    <div>
         <img src="/../Images/eXtremeRed.png">
     </div>
     <h1 class="errorRed">${errorMessage!""}</h1>
@@ -41,7 +37,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <h1 align="center">Add Repair Parts</h1>
+                    <h2 align="center">Add Parts</h2>
                     <form  class="form-horizontal" action="/admin/repairs/parts/add" method="POST" id="repairPartsForm" name="repairPartsForm">
                             <@spring.bind "repairPartsForm.repairID"/>
                             <input type="hidden" name="repairID" value="${repairPartsForm.repairID!""}"/>
@@ -62,7 +58,7 @@
                              <div class="form-group">
                              <label for="quantity">Quantity</label>
                              <@spring.bind "repairPartsForm.quantity"/>
-                             <input class="form-control" type="number" name="quantity" id="quantity" placeholder="1" value="${repairPartsForm.quantity!""}"/>
+                             <input class="form-control" type="number" min=1 max=999999 name="quantity" id="quantity" placeholder="1" value="${repairPartsForm.quantity!""}"/>
                              <#list spring.status.errorMessages as error>
                                 <span class="errorRed">${error}</span>
                              </#list>
@@ -97,26 +93,44 @@
                 <#list repairPartList as repairPart>
                 <span>
                 <tr>
-                    <td class="text-center">${repairPart.partID}</td>
-                    <td class="text-center">${repairPart.partPrice}</td>
-                    <td class="text-center">${repairPart.quantity}</td
-                    <td> delete </td>
+                    <td class="text-center">${repairPart.part.partID}</td>
+                    <td class="text-center">${repairPart.part.partPrice}</td>
+                    <td class="text-center">${repairPart.quantity}</td>
+                    <td>
+                        <form action="/admin/repairs/parts/delete/${repairPart.repairID}/${repairPart.part.partID}" method="POST">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        </form>
+                    </td>
                 </tr>
                 </span>
                 </#list>
             </tbody>
         </table>
     </div>
-<#else>
-<h2>No parts added to this repair yet!</h2>
-</#if>
+    <#else>
+        <h2>No parts added to this repair yet!</h2>
+    </#if>
+    <hr></hr>
 
-<hr></hr>
+        <div class="container-fluid">
+            <div class="row">
+                <form class="form-horizontal">
+                    <fieldset class="Norm">
+                        <div class="col-md-6 col-md-offset-3">
+                            <label  for="filterInput">Filter</label>
+                            <input type="text" class="form-control" name="filterInput" id="filterInput" placeholder="abc-123..."/>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
 
 
-        <label for="filterInput">Filter</label>
-        <input type="text" class="form-control" name="filterInput" id="filterInput" placeholder="turbocharger..."/>
+    <hr></hr>
     <#if wholePartList??>
+        <h3 class="text-center"><u>All available parts</u></h3>
         <div class="table-responsive">
             <table id="resultsTable" class="table" class="table-hover">
                 <thead>

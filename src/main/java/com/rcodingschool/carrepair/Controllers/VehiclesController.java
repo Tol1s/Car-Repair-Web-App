@@ -96,7 +96,7 @@ public class VehiclesController {
             if (vehicleService.findByVehicleID(vehicleForm.getVehicleID()).isEmpty()) {
                 Vehicle vehicle = VehicleConverter.buildVehicleObject(vehicleForm, userService.findByAfm(vehicleForm.getAfm()).get(0));
                 vehicleService.save(vehicle);
-                redirectAttributes.addFlashAttribute(MESSAGE, "User was created!");
+                redirectAttributes.addFlashAttribute(MESSAGE, "Vehicle was created!");
             } else {
                 vehicleForm.setVehicleID("");
                 redirectAttributes.addFlashAttribute(VEHICLE_FORM, vehicleForm);
@@ -105,7 +105,7 @@ public class VehiclesController {
         } catch (Exception exception) {
             //if an error occurs show it to the user :(
             vehicleForm.setAfm("");
-            redirectAttributes.addFlashAttribute(VEHICLE_FORM,vehicleForm);
+            redirectAttributes.addFlashAttribute(VEHICLE_FORM, vehicleForm);
             redirectAttributes.addFlashAttribute(MESSAGE, exception.getMessage());
         }
         return "redirect:/admin/vehicles";
@@ -113,7 +113,7 @@ public class VehiclesController {
 
     //The processDeleteVehicle method will map "/admin/vehicles/delete/{id}" GET requests and
     //will delete a vehicle and redirect to "/admin/vehicles"
-    @RequestMapping(value = "/vehicles/delete/{vehicleID}", method = RequestMethod.GET)
+    @RequestMapping(value = "/vehicles/delete/{vehicleID}", method = RequestMethod.POST)
     public String processDeleteVehicle(@PathVariable String vehicleID,
                                        RedirectAttributes redirectAttributes) {
         //Delete the vehicle depending on its vehicleID
