@@ -12,6 +12,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../utilities.js"></script>
+    <script type="text/javascript" src="../p5libraries/validation.js"></script>
     <link rel="stylesheet" href="/../styles.css">
     <!---- Trying to make some cool stuff with p5.js
     <script async src=https://CDN.JSDelivr.net/g/p5.js(p5.min.js+addons/p5.dom.js+addons/p5.sound.js)></script>
@@ -49,7 +50,7 @@
         <div class="row">
             <div class="col-md-12">
 
-                <form  class="form-horizontal" action="/admin/users/create" method="POST" id="userForm" name="userForm">
+                <form  class="form-horizontal" action="/admin/users/create" method="POST" id="userForm" name="userForm" onsubmit="return validateForm()">
                     <fieldset class="Hor">
                         <legend>User's Personal Details</legend>
                         <div class="form-group">
@@ -67,6 +68,8 @@
                             <#list spring.status.errorMessages as error>
                                 <span class="errorRed">${error}</span>
                             </#list>
+                            <div name="error" id="error">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="lastName">Lastname</label>
